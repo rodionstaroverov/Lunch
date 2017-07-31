@@ -1,151 +1,121 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Lunch</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-        <div id="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lunch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="app">
 
-            <div id="user-name" v-if="!user.status">
-                <p>Пожалуйста введите ваше имя</p>
-                <input v-model="user.name" v-on:keyup.13="user.status = true" autofocus maxlength="30">
-                <div class="user-name-submit" v-if="user.name && !user.status" v-on:click="user.status = true">OK</div>
+    <div id="user-name" v-if="!user.status">
+        <p>Пожалуйста введите ваше имя</p>
+        <input v-model="user.name" v-on:keyup.13="user.status = true" autofocus maxlength="30">
+        <div class="user-name-submit" v-if="user.name && !user.status" v-on:click="user.status = true">OK</div>
 
-                <!--<pre style="font-size: 12px;">{{ $data | json }}</pre>-->
+        <!--<pre style="font-size: 12px;">{{ $data | json }}</pre>-->
+    </div>
+
+    <header v-if="user.status">
+        <div class="logo"></div>
+        <div class="current-user">Вы зашли как: {{ user.name }}</div>
+        <div class="total-order"><a href="#">Посмореть общий заказ</a></div>
+    </header>
+
+    <div class="main-content">
+        <div v-for="product in items" v-bind:id="product.id" class="product" v-bind:style="{ 'background-image': 'url(' + product.img + ')' }">
+            <div class="product-success" @click="$event.target.classList.toggle('product-success-active')"></div>
+            <div class="product-description">
+                <h4>{{ product.name }}</h4>
+                <p class="description">{{ product.description }}</p>
             </div>
-
-            <header v-if="user.status">
-                <div class="logo"></div>
-                <div class="current-user">{{ user.name }}</div>
-                <div class="total-order"><a href="#">Посмореть общий заказ</a></div>
-            </header>
-
-            <div class="main-content" v-if="user.status">
-            <aside>
-                <p class="list">Список Блюд</p>
-                <li class="active">Все товары</li>
-                <li v-for="item in items">{{ item.name }}</li>
-            </aside>
-            <div class="product-list">
-
-                <p class="product-title">Все товары</p>
-
-                <div v-for="product in items" v-bind:id="product.id" class="product">
-                    <img v-bind:src="product.img" class="product-photo" />
-                    <p class="product-description">
-                        <p id="">{{ product.name }}</p>
-                        <p>{{ product.description }}</p>
-                    </p>
-                    <div class="product-qty"></div>
-                    <p class="product-price">{{ product.price }}</p>
-                </div>
-            </div>
-            <div class="checkout"  v-if="user.status">
-                <div class="checkout-info">
-                    <p>{{ user.name }}</p>
-                    <p>Заказ на
-                        <script type="text/javascript">
-                            document.write(new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + (new Date().getYear() + 1900));
-                        </script>
-                    </p>
-                </div>
-
-                <div id="" class="checkout-item">
-                    <p>$item_name</p>
-                    <img class="checkout-item-remove" />
-                    <div class="checkout-item-qty">
-                        <div class="decrease">-</div>
-                        <p>$item-qty</p>
-                        <div class="increase">+</div>
-                    </div>
-
-                    <div class="checkout-total">
-                        Общая сумма - $total_price
-                    </div>
-                    <div class="confirm-order">
-                        Оформить заказ
-                    </div>
-                </div>
-            </div>
-        </div>
+            <div class="product-price">{{ product.price }}₽</div>
         </div>
 
-        <script>
-            new Vue({
+    </div>
 
-                el: "#app",
-                data: {
-                    user:
+
+    <script>
+        new Vue({
+
+            el: "#app",
+            data: {
+                user:
                     {
                         name: "",
                         status: false
                     },
-                    items: [
-                        {
-                            name: "Хлеб",
-                            description: "1Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "5",
-                            id: "q10",
-                            img: "img/item1.jpg"
-                        },
-                        {
-                            name: "Одноразовая посуда",
-                            description: "2Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "2",
-                            id: "q11",
-                            img: "img/item2.jpg"
-                        },
-                        {
-                            name: "Салаты и закуски",
-                            description: "3Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "65",
-                            id: "q12",
-                            img: "img/item3.jpg"
-                        },
-                        {
-                            name: "Бутерброды",
-                            description: "4Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "70",
-                            id: "q13",
-                            img: "img/item4.jpg"
-                        },
-                        {
-                            name: "Первые блюда",
-                            description: "5Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "50",
-                            id: "q14",
-                            img: "img/item5.jpg"
-                        },
-                        {
-                            name: "Вторые блюда",
-                            description: "6Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "40",
-                            id: "q15",
-                            img: "img/item6.jpg"
-                        },
-                        {
-                            name: "Десерты",
-                            description: "7Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "100",
-                            id: "q16",
-                            img: "img/item7.jpg"
-                        },
-                        {
-                            name: "Напитки",
-                            description: "8Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-                            price: "50",
-                            id: "q17",
-                            img: "img/item8.jpg"
-                        }
-                    ]
-                }
-            })
-        </script>
-    </body>
+                items: [
+                    {
+                        name: "Первое блюдо",
+                        description: "1Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab possimus similique soluta? Aut doloremque laboriosam nulla obcaecati optio provident ratione.",
+                        price: "5",
+                        id: "q10",
+                        img: "img/item1.jpg"
+                    },
+                    {
+                        name: "Второе блюдо",
+                        description: "2Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "2",
+                        id: "q11",
+                        img: "img/item2.jpg"
+                    },
+                    {
+                        name: "Салат",
+                        description: "3Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "65",
+                        id: "q12",
+                        img: "img/item3.jpg"
+                    },
+                    {
+                        name: "Бутерброд",
+                        description: "4Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "70",
+                        id: "q13",
+                        img: "img/item4.jpg"
+                    },
+                    {
+                        name: "Кофе",
+                        description: "5Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "50",
+                        id: "q14",
+                        img: "img/item5.jpg"
+                    },
+                    {
+                        name: "Чай",
+                        description: "6Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "40",
+                        id: "q15",
+                        img: "img/item6.jpg"
+                    },
+                    {
+                        name: "Десерт",
+                        description: "7Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "100",
+                        id: "q16",
+                        img: "img/item7.jpg"
+                    },
+                    {
+                        name: "Хлеб",
+                        description: "8Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "50",
+                        id: "q17",
+                        img: "img/item8.jpg"
+                    },
+                    {
+                        name: "Приборы",
+                        description: "8Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur impedit laboriosam libero minus saepe temporibus!",
+                        price: "50",
+                        id: "q17",
+                        img: "img/item8.jpg"
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
 </html>
